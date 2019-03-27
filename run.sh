@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# 
+#
 # Environment variables
 #
 
@@ -9,36 +9,31 @@ export TOOLCHAIN_ID="1cfc3bd9-3891-4a9d-8503-e1cb10333e38"
 
 # API Key of the user
 export IBM_CLOUD_API_KEY="5nolj6lyv65L6dEZbuAzK5sGLgWmw9VXCFO7xqwoUCwI"
-
-# This is the name of the application that shows up on the Dashboard
-export LOGICAL_APP_NAME="Weather Application"
-
-# This value is prefixed to the build number
-export BUILD_PREFIX=master
-
-# A unique number identifying the build
-export BUILD_NUMBER=1
+export MY_APP_NAME="Weather Application"
+export MY_BUILD_NUMBER="master:1"
 
 # Set the value to true to see detail CLI logs
-#export IDRA_DEBUG=false
+#export IBMCLOUD_TRACE=true
 
+# Log into IBM Cloud CLI
+ibmcloud login -a api.ng.bluemix.net --apikey $IBM_CLOUD_API_KEY --no-region
 
 #
 # Upload a build record for this build, It is assumed that the build was successful
-idra --publishbuildrecord  --branch=master --repositoryurl=https://test-iam-1 --commitid=12344234 --status=pass
+ibmcloud doi publishbuildrecord --logicalappname=$MY_APP_NAME --buildnumber=$MY_BUILD_NUMBER --branch=master --repositoryurl=https://github.com/open-toolchain/dra-toolchain-demo --commitid=2b5fd14 --status=pass
 
 #
 # Upload unittest test record for the build
-idra --publishtestresult --filelocation=mocha_pass.json --type=unittest
+ibmcloud doi publishtestrecord --logicalappname=$MY_APP_NAME --buildnumber=$MY_BUILD_NUMBER --filelocation=mocha_pass.json --type=unittest
 
 #
 # Upload CodeCoverge test record for the build
-idra --publishtestresult --filelocation=istanbul_pass.json --type=code
+ibmcloud doi publishtestrecord --logicalappname=$MY_APP_NAME --buildnumber=$MY_BUILD_NUMBER --filelocation=istanbul_pass.json --type=code
 
 #
 # Invoke a DevOps Insights gate to evaluated a policy based on uploaded data
-idra --evaluategate  --policy=FirstPolicy
+ibmcloud doi evaluategate --logicalappname=$MY_APP_NAME --buildnumber=$MY_BUILD_NUMBER --policy=FirstPolicy
 
 #
 # Upload a deployment record, It is assumed that the deployment was successful
-idra --publishdeployrecord  --env=dev --status=pass
+ibmcloud doi publishdeployrecord --logicalappname=$MY_APP_NAME --buildnumber=$MY_BUILD_NUMBER --joburl="cloud.ibm.com" --env=dev --status=pass
