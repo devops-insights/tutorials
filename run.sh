@@ -9,14 +9,19 @@ export TOOLCHAIN_ID="1cfc3bd9-3891-4a9d-8503-e1cb10333e38"
 
 # API Key of the user
 export IBM_CLOUD_API_KEY="5nolj6lyv65L6dEZbuAzK5sGLgWmw9VXCFO7xqwoUCwI"
+
+# This is the name of the application that shows up on the Dashboard
 export MY_APP_NAME="Weather Application"
+
+# This value is the unique string that identifies your build.
+# In this case it is comprised of branch name and number
 export MY_BUILD_NUMBER="master:1"
 
 # Set the value to true to see detail CLI logs
 #export IBMCLOUD_TRACE=true
 
 # Log into IBM Cloud CLI
-ibmcloud login -a api.ng.bluemix.net --apikey $IBM_CLOUD_API_KEY --no-region
+ibmcloud login --apikey $IBM_CLOUD_API_KEY --no-region
 
 #
 # Upload a build record for this build, It is assumed that the build was successful
